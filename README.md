@@ -41,3 +41,54 @@ Grosse Pointe Blank (1997)
 具体实现见项目内代码
 
 二、基于tensorflow的个性推荐系统
+
+
+使用文本卷积神经网络，并利用多层循环深度网络完成电影推荐的任务。 
+
+实现的推荐功能如下：
+
+1、指定用户和电影进行评分
+
+2、推荐同类型的电影
+
+3、推荐您喜欢的电影
+
+4、看过这个电影的人还看了（喜欢）哪些电影
+
+系统结构如下
+
+![](https://github.com/chengstone/movie_recommender/blob/master/assets/model.001.jpeg)
+
+训练的loss：
+
+![](https://github.com/chengstone/movie_recommender/blob/master/assets/loss.png)
+
+示例：
+
+推荐您喜欢的电影
+
+以下是给您的推荐（用户234）：
+
+
+1642
+
+[1688 'Anastasia (1997)' "Animation|Children's|Musical"]
+
+994
+
+[1007 'Apple Dumpling Gang, The (1975)' "Children's|Comedy|Western"]
+
+667
+
+[673 'Space Jam (1996)' "Adventure|Animation|Children's|Comedy|Fantasy"]
+
+1812
+
+[1881 'Quest for Camelot (1998)' "Adventure|Animation|Children's|Fantasy"]
+
+1898
+
+[1967 'Labyrinth (1986)' "Adventure|Children's|Fantasy"]
+
+具体实现见项目内代码
+
