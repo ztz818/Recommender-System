@@ -71,7 +71,7 @@ Grosse Pointe Blank (1997)
 
 
 文本卷积网络:<br>
-![](https://github.com/chengstone/movie_recommender/blob/master/assets/3.png)
+![](https://github.com/ztz818/Recommender-System/blob/master/3.png)
 
 网络的第一层是词嵌入层，由每一个单词的嵌入向量组成的嵌入矩阵。下一层使用多个不同尺寸（窗口大小）的卷积核在嵌入矩阵上做卷积，窗口大小指的是每次卷积覆盖几个单词。这里跟对图像做卷积不太一样，图像的卷积通常用2x2、3x3、5x5之类的尺寸，而文本卷积要覆盖整个单词的嵌入向量，所以尺寸是（单词数，向量维度），比如每次滑动3个，4个或者5个单词。第三层网络是max pooling得到一个长向量，最后使用dropout做正则化，最终得到了电影Title的特征。
 
