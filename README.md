@@ -42,8 +42,8 @@ Grosse Pointe Blank (1997)
 
 二、基于tensorflow的个性推荐系统
 
+本项目使用文本卷积神经网络，并使用MovieLens数据集完成电影推荐的任务。 
 
-使用文本卷积神经网络，并利用多层循环深度网络完成电影推荐的任务。 
 
 实现的推荐功能如下：
 
@@ -51,45 +51,52 @@ Grosse Pointe Blank (1997)
 
 2、推荐同类型的电影
 
-3、推荐您喜欢的电影
+3、推荐某个用户喜欢的电影
 
 4、看过这个电影的人还看了（喜欢）哪些电影
+
+
+本项目使用的数据集：<br>
+
+本项目使用的是MovieLens 1M 数据集，包含6000个用户在近4000部电影上的1亿条评论。 
+
+数据集分为三个文件：用户数据users.dat，电影数据movies.dat和评分数据ratings.dat。
 
 系统结构如下
 
 ![](https://github.com/chengstone/movie_recommender/blob/master/assets/model.001.jpeg)
 
+我们的目的就是要训练出用户特征和电影特征，在实现推荐功能时使用。得到这两个特征以后，就可以选择任意的方式来拟合评分了。我使用了两种方式，一个是上图中画出的将两个特征做向量乘法，将结果与真实评分做回归，采用MSE优化损失。因为本质上这是一个回归问题，另一种方式是，将两个特征作为输入，再次传入全连接层，输出一个值，将输出值回归到真实评分，采用MSE优化损失。 <br>
+实际上第二个方式的MSE loss在0.8附近，第一个方式在1附近，5次迭代的结果。<br>
+
+
+文本卷积网络:<br>
+![](https://github.com/chengstone/movie_recommender/blob/master/assets/3.png)
+
+网络的第一层是词嵌入层，由每一个单词的嵌入向量组成的嵌入矩阵。下一层使用多个不同尺寸（窗口大小）的卷积核在嵌入矩阵上做卷积，窗口大小指的是每次卷积覆盖几个单词。这里跟对图像做卷积不太一样，图像的卷积通常用2x2、3x3、5x5之类的尺寸，而文本卷积要覆盖整个单词的嵌入向量，所以尺寸是（单词数，向量维度），比如每次滑动3个，4个或者5个单词。第三层网络是max pooling得到一个长向量，最后使用dropout做正则化，最终得到了电影Title的特征。
+
 训练的loss：
 
 ![](https://github.com/chengstone/movie_recommender/blob/master/assets/loss.png)
 
-示例：
+开始推荐电影<br>
 
-推荐您喜欢的电影
+使用生产的用户特征矩阵和电影特征矩阵做电影推荐<br>
 
-以下是给您的推荐（用户234）：
+推荐同类型的电影<br>
 
+思路是计算当前看的电影特征向量与整个电影特征矩阵的余弦相似度，取相似度最大的top_k个，这里加了些随机选择在里面，保证每次的推荐稍稍有些不同。<br>
 
-1642
+推荐您喜欢的电影<br>
+思路是使用用户特征向量与电影特征矩阵计算所有电影的评分，取评分最高的top_k个，同样加了些随机选择部分。<br>
 
-[1688 'Anastasia (1997)' "Animation|Children's|Musical"]
+看过这个电影的人还看了（喜欢）哪些电影<br>
+首先选出喜欢某个电影的top_k个人，得到这几个人的用户特征向量。<br>
+然后计算这几个人对所有电影的评分<br><br>
+选择每个人评分最高的电影作为推荐<br>
+同样加入了随机选择<br>
 
-994
+以上就是实现的常用的推荐功能，将网络模型作为回归问题进行训练，得到训练好的用户特征矩阵和电影特征矩阵进行推荐。
 
-[1007 'Apple Dumpling Gang, The (1975)' "Children's|Comedy|Western"]
-
-667
-
-[673 'Space Jam (1996)' "Adventure|Animation|Children's|Comedy|Fantasy"]
-
-1812
-
-[1881 'Quest for Camelot (1998)' "Adventure|Animation|Children's|Fantasy"]
-
-1898
-
-[1967 'Labyrinth (1986)' "Adventure|Children's|Fantasy"]
-
-具体实现见项目内代码
 
 由于网络原因，数据集暂不上传，需要的请联系513617866@qq.com
